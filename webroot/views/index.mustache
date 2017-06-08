@@ -1,0 +1,72 @@
+{{> header }}
+
+        <aside class="aside-form">  <!-- Form -->
+            <div class="row">
+                <div class="u-full-width">
+                    <h4> Add New Place</h4>
+                </div>
+            </div>
+            <form action="/" method="post">
+                <div class="row">
+                    <label class="form-label">Place</label>
+                    <input name="name" class="u-full-width" type="text" placeholder="Name of Bar/Restaurant" required/>
+                    <label class="form-label">Has Long Islands?</label>
+                    <select id="iHazLongIsland" name="hasLongIsland" class="u-full-width" onchange="longIslandCheck()" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
+                    <div id="ratingField" class="hideRating">
+                        <label class="form-label">Rating</label>
+                        <fieldset class="rating">
+                            <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
+                            <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
+                            <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
+                            <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
+                            <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+                        </fieldset>
+                    </div>
+                </div>
+                <input class="button-primary" type="submit" value="Save Place">
+            </form>
+        </aside>  <!-- end form -->
+        
+        <section class="table-section">  <!-- Table/Results -->
+            <div class="row">
+                <div class="u-full-width">
+                    <h4> Places</h4>
+                </div>
+            </div>
+            <table class="u-full-width">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Long Islands?</th>
+                        <th>Rating</th>
+                        {{#delete}}
+                        <th class="delete-place">Delete</th>
+                        {{/delete}}
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#places}}
+                    <tr>
+                        <td><span>{{name}}</span></td>
+                        
+                        <td><span>{{hasLongIsland}}</span></td>
+
+                        <td><span>{{rating}}</span></td>
+                        {{#delete}}
+                        <td class="delete-place">
+                            <form action="/{{id}}/delete" method="post">
+                                <input class="button" type="submit" value="X"/>
+                            </form>
+                        </td>
+                        {{/delete}}
+                    </tr>
+                    {{/places}}
+                </tbody>
+            </table>
+        </section>  <!-- end table/results -->
+
+{{> footer }}
+

@@ -1,0 +1,35 @@
+<html>
+<head>
+    <title>PDX-LIP</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/css/normalize.css">
+        <link rel="stylesheet" href="/css/skeleton.css">
+        <link rel="stylesheet" href="/css/styles.css">
+        <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+           <div class="u-pull-right">
+               <ul>
+                   {{^authenticated}}
+                    <li><a href="/login">Login</a></li>
+                    {{/authenticated}}
+                    {{#authenticated}}
+                    <li>Logged in as {{username}}</li>
+                    <li><a href="/logout">Logout</a></li>
+                    {{/authenticated}}
+                </ul>
+            </div>
+            {{#flash}}
+            <div class="u-full-width">
+                <span class="sr-only">Error:</span>
+                {{flash}}
+            </div>
+            {{/flash}}
+        </div>
+        <div class="row">   <!-- Nav/Title -->
+            <div class="u-full-width">
+                <h2>Long Island Please!</h2>
+            </div>
+        </div>  <!-- end Nav/Title -->
