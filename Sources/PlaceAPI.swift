@@ -27,10 +27,10 @@ class PlaceAPI {
         return try allAsDictionary().jsonEncodedString()
     }
     
-    static func newPlace(withName name: String, hasLongIsland: String, rating: Int) throws -> [String: Any] {
+    static func newPlace(withName name: String, longisland: Bool, rating: Int) throws -> [String: Any] {
         let place = Place()
         place.name = name
-        place.hasLongIsland = hasLongIsland
+        place.longisland = longisland
         place.rating = rating
         try place.save { id in
             place.id = id as! Int

@@ -11,9 +11,9 @@
                     <label class="form-label">Place</label>
                     <input name="name" class="u-full-width" type="text" placeholder="Name of Bar/Restaurant" required/>
                     <label class="form-label">Has Long Islands?</label>
-                    <select id="iHazLongIsland" name="hasLongIsland" class="u-full-width" onchange="longIslandCheck()" required>
-                        <option value="No">No</option>
-                        <option value="Yes">Yes</option>
+                    <select id="iHazLongIsland" name="longisland" class="u-full-width" onchange="longIslandCheck()" required>
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
                     </select>
                     <div id="ratingField" class="hideRating">
                         <label class="form-label">Rating</label>
@@ -29,7 +29,7 @@
                 <input class="button-primary" type="submit" value="Save Place">
             </form>
         </aside>  <!-- end form -->
-        
+
         <section class="table-section">  <!-- Table/Results -->
             <div class="row">
                 <div class="u-full-width">
@@ -51,10 +51,14 @@
                     {{#places}}
                     <tr>
                         <td><span>{{name}}</span></td>
-                        
-                        <td><span>{{hasLongIsland}}</span></td>
-
+                        {{^longisland}}
+                        <td>No</td>
+                        <td>N/A</td>
+                        {{/longisland}}
+                        {{#longisland}}
+                        <td>Yes</td>
                         <td><span>{{rating}}</span></td>
+                        {{/longisland}}
                         {{#delete}}
                         <td class="delete-place">
                             <form action="/{{id}}/delete" method="post">
@@ -69,4 +73,3 @@
         </section>  <!-- end table/results -->
 
 {{> footer }}
-

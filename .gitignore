@@ -22,6 +22,9 @@ xcuserdata/
 *.xccheckout
 *.xcscmblueprint
 .env
+data/
+http_log.txt
+StORMlog.txt
 
 ## Obj-C/Swift specific
 *.hmap

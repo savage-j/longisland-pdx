@@ -8,5 +8,6 @@ let package = Package(
     .Package(url: "https://github.com/PerfectlySoft/Perfect-Mustache.git", majorVersion: 2),
     .Package(url: "https://github.com/PerfectlySoft/Perfect-RequestLogger.git", majorVersion: 1, minor: 0),
     .Package(url: "https://github.com/PerfectlySoft/Perfect-Turnstile-PostgreSQL.git",majorVersion: 1, minor: 0)
+        
     ]
 )

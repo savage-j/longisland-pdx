@@ -15,7 +15,7 @@ class Place: PostgresStORM {
     
     var id: Int = 0
     var name: String = ""
-    var hasLongIsland: String = ""
+    var longisland: Bool = false
     var rating: Int = 0
     
     override open func table() -> String { return "places" }
@@ -23,7 +23,7 @@ class Place: PostgresStORM {
     override func to(_ this: StORMRow) {
         id = this.data["id"] as? Int ?? 0
         name = this.data["name"] as? String ?? ""
-        hasLongIsland = this.data["hasLongIsland"] as? String ?? ""
+        longisland = this.data["longisland"] as? Bool ?? false
         rating = this.data["rating"] as? Int ?? 0
     }
     
@@ -41,7 +41,7 @@ class Place: PostgresStORM {
         return [
             "id": self.id,
             "name": self.name,
-            "hasLongIsland": self.hasLongIsland,
+            "longisland": self.longisland,
             "rating": self.rating
         ]
     }
