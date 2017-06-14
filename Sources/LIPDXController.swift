@@ -20,7 +20,9 @@ final class LIPController {
         return [
             Route(method: .get, uri: "/", handler: indexView),
             Route(method: .post, uri: "/", handler: addPlace),
-            Route(method: .post, uri: "/{id}/delete", handler: deletePlace)
+            Route(method: .post, uri: "/{id}/delete", handler: deletePlace),
+            Route(method: .get, uri: "/api/v1/places", handler: index),
+            Route(method: .get, uri: "/api/v1/places/{id}", handler: indexResponse)
         ]
     }
 
@@ -38,6 +40,40 @@ final class LIPController {
             response.setBody(string: "Error handling request: \(error)")
                 .completed(status: .internalServerError)
         }
+    }
+    
+    func index(request: HTTPRequest, response: HTTPResponse) {
+        response.setHeader(.contentType, value: "application/json")
+        
+        var resp = [String: Any]()
+        
+        do {
+            resp["places"] = try PlaceAPI.allAsDictionary()
+            try response.setBody(json: resp)
+        } catch {
+            print(error)
+        }
+        response.completed()
+    }
+    
+    func indexResponse(request: HTTPRequest, response: HTTPResponse) {
+        response.setHeader(.contentType, value: "application/json")
+
+        var resp = [String: Any]()
+        do {
+            guard let idString = request.urlVariables["id"],
+                let id = Int(idString) else {
+                    response.completed(status: .badRequest)
+                    return
+            }
+            resp["places"] = try PlaceAPI.allAsDictionaryMinimum(number: id)
+            try response.setBody(json: resp)
+
+        } catch {
+            print(error)
+        }
+        response.completed()
+    
     }
 
     func addPlace(request: HTTPRequest, response: HTTPResponse) {

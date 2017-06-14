@@ -59,6 +59,18 @@ class Place: PostgresStORM {
         try getObj.find(findObj)
         return getObj
     }
+    
+    static func getPlacesGreaterThan(minimumId id: Int) throws -> [Place] {
+        let getObj = Place()
+        do {
+            let cursor = StORMCursor(limit: 9999999,offset: 0)
+            try getObj.select(columns: [], whereclause: "id > \(id)", params: [], orderby: [], cursor: cursor)
+
+        } catch {
+            throw StORMError.error("\(error)")
+        }
+        return getObj.rows()
+    }
 }
 
 extension Place: JSONConvertible {
