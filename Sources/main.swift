@@ -43,14 +43,6 @@ var routes = Routes()
 routes.add(method: .get, uri: "/api/v1/test", handler: AuthHandlersJSON.testHandler)
 routes.add(method: .get, uri: "/logout", handler: AuthHandlersWeb.logoutHandler)
 
-func getUser(matchingId id: String) throws -> AuthAccount {
-    let getObj = AuthAccount()
-    var findObj = [String: Any]()
-    findObj["uniqueID"] = "\(id)"
-    try getObj.find(findObj)
-    return getObj
-}
-
 // An example route where authentication will be enforced
 routes.add(method: .get, uri: "/api/v1/check", handler: {
     request, response in

@@ -23,13 +23,13 @@ class PlaceAPI {
         return placesToDictionary(places)
     }
     
-    static func allAsDictionaryMinimum(number: Int) throws -> [[String: Any]] {
+    static func allAsDictionaryFromMinimum(number: Int) throws -> [[String: Any]] {
         let places = try Place.getPlacesGreaterThan(minimumId: number)
         return placesToDictionary(places)
     }
     
-    static func allMinimum(number: Int) throws -> String {
-        return try allAsDictionaryMinimum(number: number).jsonEncodedString()
+    static func allFromMinimum(number: Int) throws -> String {
+        return try allAsDictionaryFromMinimum(number: number).jsonEncodedString()
     }
     
     static func all() throws -> String {

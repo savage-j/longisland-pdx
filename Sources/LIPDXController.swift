@@ -18,14 +18,18 @@ final class LIPController {
 
     var routes: [Route] {
         return [
+            // Web page routes
             Route(method: .get, uri: "/", handler: indexView),
             Route(method: .post, uri: "/", handler: addPlace),
             Route(method: .post, uri: "/{id}/delete", handler: deletePlace),
-            Route(method: .get, uri: "/api/v1/places", handler: index),
-            Route(method: .get, uri: "/api/v1/places/{id}", handler: indexResponse)
+            
+            // iOS routes
+            Route(method: .get, uri: "/api/v1/places", handler: getPlaces),
+            Route(method: .get, uri: "/api/v1/places/{id}", handler: getPlacesMinID)
         ]
     }
 
+    //MARK: - Web page handlers
     func indexView(request: HTTPRequest, response: HTTPResponse) {
         do {
             var values = MustacheEvaluationContext.MapType()
@@ -42,40 +46,6 @@ final class LIPController {
         }
     }
     
-    func index(request: HTTPRequest, response: HTTPResponse) {
-        response.setHeader(.contentType, value: "application/json")
-        
-        var resp = [String: Any]()
-        
-        do {
-            resp["places"] = try PlaceAPI.allAsDictionary()
-            try response.setBody(json: resp)
-        } catch {
-            print(error)
-        }
-        response.completed()
-    }
-    
-    func indexResponse(request: HTTPRequest, response: HTTPResponse) {
-        response.setHeader(.contentType, value: "application/json")
-
-        var resp = [String: Any]()
-        do {
-            guard let idString = request.urlVariables["id"],
-                let id = Int(idString) else {
-                    response.completed(status: .badRequest)
-                    return
-            }
-            resp["places"] = try PlaceAPI.allAsDictionaryMinimum(number: id)
-            try response.setBody(json: resp)
-
-        } catch {
-            print(error)
-        }
-        response.completed()
-    
-    }
-
     func addPlace(request: HTTPRequest, response: HTTPResponse) {
         do {
             guard let name = request.param(name: "name"), let longisland = request.param(name: "longisland") else {
@@ -114,5 +84,50 @@ final class LIPController {
             response.setBody(string: "Error handling request: \(error)")
                 .completed(status: .internalServerError)
         }
+    }
+    
+    // retrieve current user 
+    func getUser(matchingId id: String) throws -> AuthAccount {
+        let getObj = AuthAccount()
+        var findObj = [String: Any]()
+        findObj["uniqueID"] = "\(id)"
+        try getObj.find(findObj)
+        return getObj
+    }
+    
+    //MARK: - iOS handlers
+    
+    func getPlaces(request: HTTPRequest, response: HTTPResponse) {
+        response.setHeader(.contentType, value: "application/json")
+        
+        var resp = [String: Any]()
+        
+        do {
+            resp["places"] = try PlaceAPI.allAsDictionary()
+            try response.setBody(json: resp)
+        } catch {
+            print(error)
+        }
+        response.completed()
+    }
+    
+    func getPlacesMinID(request: HTTPRequest, response: HTTPResponse) {
+        response.setHeader(.contentType, value: "application/json")
+        
+        var resp = [String: Any]()
+        do {
+            guard let idString = request.urlVariables["id"],
+                let id = Int(idString) else {
+                    response.completed(status: .badRequest)
+                    return
+            }
+            resp["places"] = try PlaceAPI.allAsDictionaryFromMinimum(number: id)
+            try response.setBody(json: resp)
+            
+        } catch {
+            print(error)
+        }
+        response.completed()
+        
     }
 }
